@@ -43,7 +43,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.CDCEvictionMoratorium',
-      version='0.0.1',
+      version='0.0.2',
       description=('Online form to complete CDC Eviction Moratorium letter'),
       long_description='# docassemble.CDCEvictionMoratorium\n\nOnline form to complete CDC Eviction Moratorium letter\n\n## Author\n\nSystem Administrator, admin@admin.com\n\n',
       long_description_content_type='text/markdown',

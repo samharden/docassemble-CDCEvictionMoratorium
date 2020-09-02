@@ -92,7 +92,7 @@ fields:
     show if: 
       variable: received_cares_check
       is: False
-  - I will earn less than $99,000 a year this year: less_than_99
+  - I will earn less than $99,000 this year: less_than_99
     datatype: yesnoradio
     show if: 
       variable: filing_joint
@@ -122,7 +122,10 @@ buttons:
 ---
 id: qualify best efforts
 question: |
-  Have you used your best efforts to get government help so you can pay your rent?
+  Did you do your best to get government help paying the rent?
+subquestion: |
+  Answer yes if you do not qualify for any help from the government,
+  or if you applied and you were denied.
 yesno: qualifies_best_efforts
 help:
   label: |
@@ -135,7 +138,8 @@ help:
     benefits.
     
     If you applied and followed up for any rental help or benefits that you
-    qualify for, you likely used your "best efforts".
+    qualify for, you likely used your "best efforts". You do not need to ask
+    for help from friends or family.
 ---
 id: qualify cant afford rent
 question: |
@@ -146,20 +150,19 @@ fields:
   - Check any that apply: cant_pay_reasons
     datatype: checkboxes
     choices:
-      - My household lost **substantial** income
+      - My household lost **substantial** income: substantial
+        help: |
+          "Substantial" income is enough that it makes a 
+          difference in your household's ability to pay for basic 
+          living expenses.       
       - I lost my job
       - My hours were cut
       - My salary was reduced
-      - I have **extraordinary** medical costs that I pay out of pocket (not covered by insurance)
-help: 
-  label: |
-    What does that mean?
-  content: |
-    An "extraordinary" medical expense is any unreimbursed medical expense 
-    likely to exceed 7.5% of one’s adjusted gross income for the year.
-  
-    "Substantial" income is enough that it makes a difference in your household's
-    ability to pay for basic living expenses.
+      - I have **extraordinary** medical costs that I pay out of pocket (not covered by insurance): extraordinary
+        help: |
+          An "extraordinary" medical expense is any unreimbursed 
+          medical expense likely to exceed 7.5% of one’s adjusted 
+          gross income for the year.
 ---
 code: |
   qualifies_cant_afford_rent = cant_pay_rent and cant_pay_reasons.any_true()
