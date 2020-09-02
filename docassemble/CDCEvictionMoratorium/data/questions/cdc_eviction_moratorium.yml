@@ -1,0 +1,313 @@
+---
+include:
+  - docassemble.MAVirtualCourt:basic-questions.yml
+---
+metadata:
+  title: Eviction Moratorium
+---
+objects:
+  - other_parties: PeopleList.using(ask_number=True,target_number=1)
+  - users: PeopleList.using(ask_number=True,target_number=1)
+  - letter: DADict
+---
+mandatory: True
+code: |
+  user_role="defendant"
+  eviction_moratorium_intro_screen
+  if not qualifies_income or not qualifies_best_efforts or not qualifies_cant_afford_rent or not qualifies_partial_payments or not qualifies_likely_homeless:
+    exit_screen
+  tenant_acknowledgement
+  users[0].name.first
+  users[0].address.address
+  other_parties[0].name.first
+  other_parties[0].address.address
+  preview_form
+  users[0].states_above_true  
+  basic_questions_signature_flow
+  download
+---
+id: eviction_moratorium_intro_screen
+question: |
+  Stop your eviction: Mass Access Project
+subquestion: |
+ 
+  The [MassAccess Project](https://massaccess.suffolklitlab.org) helps you
+  file forms online during the COVID-19 emergency.
+  
+  Use this form to tell your landlord about your rights under the Centers
+  for Disease Control and Prevention's [eviction moratorium 
+  order](https://s3.amazonaws.com/public-inspection.federalregister.gov/2020-19654.pdf).
+  
+  At the end of this online form, you can download, print, or email a
+  completed letter.
+  
+  To use this form, you must:
+  
+  1. Earn under the income limit.
+  2. Be unable to pay your rent because you lost income.
+  3. Be at risk of homelessness or doubling up (sharing housing in close quarters).
+  
+  We will ask you detailed questions to find out if you qualify.
+  
+  Tap the {green words} in any screen for a definition or more information.
+  
+  % if chat_partners_available().help:
+  Live help is currently available in this interview. Click the speech bubble
+  (:comment-alt:) in the navigation bar to connect to a live advocate for help.
+  % endif
+
+fields:
+  - To continue, you must accept the [terms of use](https://massaccess.suffolklitlab.org/privacy/): acknowledged_information_use
+    datatype: checkboxes
+    none of the above: False    
+    minlength: 1
+    choices:
+      - I accept the terms of use.
+    validation messages:
+      minlength: |
+        You cannot continue unless you agree to the terms of use.        
+continue button field: eviction_moratorium_intro_screen
+terms:
+  green words: |
+    Green words are legal terms or a short way of referring to something that needs more explanation. The definition or explanation pops up when you tap the green words.
+right: |
+  % if user_has_saved_answers:
+  ${fa_icon("bell", color="primary", size="sm")}
+  Saved answers available!  
+  
+  ${action_button_html(url_action('load_answer'), icon="folder-open", label=word("View answers"), size="sm" )}
+  % endif    
+---
+code: |
+  qualifies = qualifies_income and qualifies_best_efforts and qualifies_cant_afford_rent and qualifies_partial_payments and qualifies_likely_homeless
+---
+id: qualify income
+question: |
+  Income qualification
+fields:
+  - I got a stimulus check this year (economic impact payment): received_cares_check
+    datatype: yesnoradio
+  - Will you file a joint tax return this year?: filing_joint
+    datatype: yesnoradio
+    show if: 
+      variable: received_cares_check
+      is: False
+  - I will earn less than $99,000 a year this year: less_than_99
+    datatype: yesnoradio
+    show if: 
+      variable: filing_joint
+      is: False
+  - My partner and I will earn less than $198,000 this year: less_than_198
+    datatype: yesnoradio
+    show if: filing_joint
+---
+code: |
+  qualifies_income = received_cares_check or ((filing_joint and less_than_198) or ((not filing_joint) and less_than_99))
+---
+event: exit_screen
+decoration: hand-paper
+question: |
+  This form is not for you
+subquestion: |
+  Based on your answers, you likely don't qualify for the CDC's
+  Eviction Moratorium.
+  
+  If you need help with your housing, you may be able to get help from
+  your [local legal aid](https://www.lsc.gov/what-legal-aid/find-legal-aid) 
+  agency.
+buttons:
+  - Restart: restart
+  - Exit: exit
+    url: https://massaccess.suffolklitlab.org
+---
+id: qualify best efforts
+question: |
+  Have you used your best efforts to get government help so you can pay your rent?
+yesno: qualifies_best_efforts
+help:
+  label: |
+    What are "best efforts"?
+  content: |
+    Available government assistance means any governmental rental or housing
+    payment benefits available to the individual or any household member.
+    
+    For example, state rental assistance, disability payments, or welfare
+    benefits.
+    
+    If you applied and followed up for any rental help or benefits that you
+    qualify for, you likely used your "best efforts".
+---
+id: qualify cant afford rent
+question: |
+  Can you afford your rent?
+fields:
+  - Can you afford your rent? : cant_pay_rent
+    datatype: noyesradio
+  - Check any that apply: cant_pay_reasons
+    datatype: checkboxes
+    choices:
+      - My household lost **substantial** income
+      - I lost my job
+      - My hours were cut
+      - My salary was reduced
+      - I have **extraordinary** medical costs that I pay out of pocket (not covered by insurance)
+help: 
+  label: |
+    What does that mean?
+  content: |
+    An "extraordinary" medical expense is any unreimbursed medical expense 
+    likely to exceed 7.5% of one’s adjusted gross income for the year.
+  
+    "Substantial" income is enough that it makes a difference in your household's
+    ability to pay for basic living expenses.
+---
+code: |
+  qualifies_cant_afford_rent = cant_pay_rent and cant_pay_reasons.any_true()
+---
+id: qualify partial payments
+question: |
+  Are you doing your best to pay part of your rent?
+fields:
+  - I am doing my best to make partial rent payments on time: qualifies_partial_payments
+    datatype: yesnoradio
+  - note: |
+      If you are making a partial payment, you may want to include the 
+      amount in this letter. It is **not** required. You can leave this
+      blank.
+    show if: qualifies_partial_payments
+  - The amount I am paying (if anything) is: partial_payment_amount
+    datatype: currency
+    required: False
+    show if: qualifies_partial_payments
+---
+id: qualify homeless
+question: |
+  Are you at risk of unsafe housing?
+subquestion: |
+  Check any that apply
+fields:
+  - If I am evicted: homeless_risk_factors
+    datatype: checkboxes
+    choices:
+      - I am likely to become homeless
+      - I would likely need to move into a homeless shelter
+      - I would likely need to move in with someone else in close quarters: close quarters
+        help: |
+          "Close quarters" means that more people than normal would live in the same apartment. For example, sharing a bedroom or sleeping in a shared living space.
+      - I do not have any other safe housing choices: safe
+        help: |
+          Safe housing means any available, unoccupied residential property, or other space for occupancy in any seasonal or temporary housing, that would not violate Federal, State, or local occupancy standards.
+      - Any other safe housing choices would cost me more money          
+---
+code: |
+  qualifies_likely_homeless = homeless_risk_factors.any_true()
+---
+id: I understand everything
+question: |
+  Read the information below carefully
+subquestion: |
+  When you file this form, you are agreeing that you understand
+  the following:
+  
+  Even though I may not be evicted before December 31, 2020,
+  
+  1. I still am responsible to pay my rent and follow all other rules of my lease. My landlord may charge me fees or interest.
+  2. At the end of December 31, 2020, I can be required to pay all of the rent 
+  due in full.
+  3. I need to tell the truth on this form. If I don't, I may face civil
+  or criminal penalties.
+continue button field: tenant_acknowledgement
+continue button label: I understand
+---
+id: signature choice
+decoration: file-signature
+question: |
+  Sign your letter
+subquestion: |
+  Your letter is almost ready. You need to sign it first.
+  
+  Use the mouse or touchpad on your computer or
+  sign with your finger on your phone. 
+   
+  You can send this letter to someone else to sign if you choose the "phone" option.
+field: signature_choice
+buttons:  
+  - Sign on my phone: phone
+    image: mobile-alt
+  - Sign on this computer: this device
+    image: desktop
+continue button field: saw_signature_choice
+#script: |
+#  <script>
+#    $(".da-field-buttons > div > .btn-da-custom").last().after("<br>")
+#    $(".da-field-buttons > div > .btn-da-custom").first().before("<br>")
+#  </script>
+---
+id: your address
+question: |
+  What is your address?
+fields:
+  - Street address: users[0].address.address
+    address autocomplete: True
+  - Unit: users[0].address.unit
+    required: False
+  - City: users[0].address.city
+  - State: users[0].address.state
+    code: |
+      states_list()
+    default: MA      
+  - Zip: users[0].address.zip 
+    required: False
+---
+id: landlords name
+question: |
+  What is your landlord's name?
+fields:
+  - Name: other_parties[0].name.first
+---
+id: signature date
+question: |
+  When do you plan to send this letter?
+fields: 
+  - Date: signature_date
+    datatype: date
+    default: ${today().format("yyyy-MM-dd")}
+---
+id: preview
+continue button field: preview_form
+question: |
+  Below is a preview of your letter
+subquestion: |
+  Click to open it in a new window. 
+  Read it over carefully. Remember to come back to this
+  window to sign and deliver it to your landlord.
+  
+  You can click back to make any changes, or download and edit the
+  letter at the end of this interview.
+  
+  ${ pdf_concatenate(letter['preview'],filename="CDC_eviction_moratorium_preview.pdf") }
+---
+id: download
+event: download
+question: |
+  Your letter is ready to send
+subquestion: |
+  Click the image below to open a preview of your letter.
+  
+  ${ pdf_concatenate(letter['final'],filename="CDC_eviction_moratorium.pdf") }
+  
+  1. Download a copy of this letter for your own records.
+  2. Send a copy to your landlord. You can send it by email or
+     print a copy and send it by mail.
+  3. You do not need to send it certified mail. If you do, it's a good
+     idea to also send a copy regular mail.
+  4. If you need to make changes to your letter, download a copy and edit
+  it using Microsoft Word, Google Docs, or another program of your choice.
+
+attachment code: letter['final']
+---
+attachment:
+  docx template file: CDC_eviction_moratorium.docx
+  variable name: letter[i]
+  filename: CDC_eviction_moratorium
+  name: CDC Eviction Moratorium Letter
