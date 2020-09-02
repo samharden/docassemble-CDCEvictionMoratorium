@@ -14,6 +14,7 @@ mandatory: True
 code: |
   user_role="defendant"
   eviction_moratorium_intro_screen
+  form_explanation
   if not qualifies_income or not qualifies_best_efforts or not qualifies_cant_afford_rent or not qualifies_partial_payments or not qualifies_likely_homeless:
     exit_screen
   tenant_acknowledgement
@@ -49,8 +50,6 @@ subquestion: |
   
   We will ask you detailed questions to find out if you qualify.
   
-  Tap the {green words} in any screen for a definition or more information.
-  
   % if chat_partners_available().help:
   Live help is currently available in this interview. Click the speech bubble
   (:comment-alt:) in the navigation bar to connect to a live advocate for help.
@@ -78,15 +77,32 @@ right: |
   ${action_button_html(url_action('load_answer'), icon="folder-open", label=word("View answers"), size="sm" )}
   % endif    
 ---
+id: moratorium intro
+question: |
+  Some things to keep in mind
+subquestion: |
+  * Every adult who lives with you needs to fill out their own
+  copy of this form.
+  * This form can only stop you from being evicted for non-
+  payment of rent. You can still be evicted for other reasons.
+  * You still may owe rent and fees.
+continue button field: form_explanation  
+---
 code: |
   qualifies = qualifies_income and qualifies_best_efforts and qualifies_cant_afford_rent and qualifies_partial_payments and qualifies_likely_homeless
 ---
 id: qualify income
 question: |
   Income qualification
+subquestion: |
+  One way you can qualify is if the IRS sent you a CARES Act 
+  stimulus payment.
+  
+  If you didn't get a stimulus payment, we will ask you about
+  your income.
 fields:
   - I got a stimulus check this year (economic impact payment): received_cares_check
-    datatype: yesnoradio
+    datatype: yesnoradio    
   - Will you file a joint tax return this year?: filing_joint
     datatype: yesnoradio
     show if: 
@@ -264,17 +280,22 @@ fields:
 ---
 id: landlords name
 question: |
-  What is your landlord's name?
+  Who is your landlord?
 fields:
-  - Name: other_parties[0].name.first
+  - Full name or organization name: other_parties[0].name.first
 ---
 id: signature date
 question: |
   When do you plan to send this letter?
+subquestion: |
+  The CDC moratorium starts on September 4, 2020 and
+  ends on December 31, 2020.
 fields: 
   - Date: signature_date
     datatype: date
     default: ${today().format("yyyy-MM-dd")}
+    min: "2020-09-04"
+    max: "2020-12-31"
 ---
 id: preview
 continue button field: preview_form

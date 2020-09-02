@@ -43,9 +43,9 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.CDCEvictionMoratorium',
-      version='0.0.2',
+      version='0.0.3',
       description=('Online form to complete CDC Eviction Moratorium letter'),
-      long_description='# docassemble.CDCEvictionMoratorium\n\nOnline form to complete CDC Eviction Moratorium letter\n\n## Author\n\nSystem Administrator, admin@admin.com\n\n',
+      long_description='# docassemble.CDCEvictionMoratorium\r\n\r\nOnline form to complete CDC Eviction Moratorium letter\r\n\r\n## Author\r\n\r\nSystem Administrator, admin@admin.com\r\n\r\n',
       long_description_content_type='text/markdown',
       author='Quinten Steenhuis',
       author_email='qsteenhuis@suffolk.edu',
