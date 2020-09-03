@@ -190,9 +190,10 @@ fields:
     choices:
       - My household lost **substantial** income: substantial
         help: |
-          "Substantial" income is enough that it makes a 
+          "Substantial" income probably means enough that it 
+          makes a 
           difference in your household's ability to pay for basic 
-          living expenses.       
+          living expenses.
       - I lost my job
       - My hours were cut
       - My salary was reduced
