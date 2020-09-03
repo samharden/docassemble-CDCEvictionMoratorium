@@ -208,15 +208,9 @@ code: |
 ---
 id: qualify partial payments
 question: |
-  Are you doing your best to pay part of your rent, if you are able to do so?
-subquestion: |
-  Answer yes even if you are not making any payments if:
-  
-  1. Your individual circumstances do not allow you to pay any amount.
-  2. You have other expenses that are not discretionary that prevent you
-  from paying any amount.
+  I am doing my best to pay the amount of rent that I am able to pay, as my circumstances allow
 fields:
-  - I am doing my best to pay the amount that I am able to pay, as my circumstances permit: qualifies_partial_payments
+  - no label: qualifies_partial_payments
     datatype: yesnoradio
   - note: |
       If you are making a partial payment, you may want to include the 
@@ -227,6 +221,18 @@ fields:
     datatype: currency
     required: False
     show if: qualifies_partial_payments
+help:
+  label: |
+    What if I can't pay anything?
+  content: |
+    You may not be able to pay any rent at all. That still may
+    count as "best efforts".
+    
+    Answer "yes" if you cannot pay rent because of your 
+    individual circumstances.
+    
+    Answer "yes" if you cannot pay rent because you have other
+    expenses that you must pay and cannot control.    
 ---
 id: qualify homeless
 question: |
