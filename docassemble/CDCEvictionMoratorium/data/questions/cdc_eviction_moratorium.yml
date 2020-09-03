@@ -203,9 +203,15 @@ code: |
 ---
 id: qualify partial payments
 question: |
-  Are you doing your best to pay part of your rent?
+  Are you doing your best to pay part of your rent, if you are able to do so?
+subquestion: |
+  Answer yes even if you are not making any payments if:
+  
+  1. Your individual circumstances do not allow you to pay any amount.
+  2. You have other expenses that are not discretionary that prevent you
+  from paying any amount.
 fields:
-  - I am doing my best to make partial rent payments on time: qualifies_partial_payments
+  - I am doing my best to pay the amount that I am able to pay, as my circumstances permit: qualifies_partial_payments
     datatype: yesnoradio
   - note: |
       If you are making a partial payment, you may want to include the 
@@ -249,8 +255,8 @@ subquestion: |
   Even though I may not be evicted before December 31, 2020,
   
   1. I still am responsible to pay my rent and follow all other rules of my lease. My landlord may charge me fees or interest.
-  2. At the end of December 31, 2020, I can be required to pay all of the rent 
-  due in full.
+  2. At the end of December 31, 2020, I may be required to pay all of the rent 
+  due in full. This may depend on the state that I live in. I can talk to an attorney to be sure.
   3. I need to tell the truth on this form. If I don't, I may face civil
   or criminal penalties.
 continue button field: tenant_acknowledgement
