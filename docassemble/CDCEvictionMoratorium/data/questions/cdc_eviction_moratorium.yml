@@ -81,12 +81,28 @@ id: moratorium intro
 question: |
   Some things to keep in mind
 subquestion: |
+  Your state may have a moratorium that gives you [more 
+  rights](https://evictionlab.org/covid-eviction-policies/).
+
   * Every adult who lives with you needs to fill out their own
   copy of this form.
-  * This form can only stop you from being evicted for non-
-  payment of rent. You can still be evicted for other reasons.
+  * This form can only stop you from being evicted for non-payment
+  of rent. You can still be evicted for other reasons.
   * You still may owe rent and fees.
-continue button field: form_explanation  
+continue button field: form_explanation
+help:
+  label: |
+    Why else can I be evicted?
+  content: |
+    The CDC order lists 5 reasons that someone can be evicted if they
+    otherwise qualify for the moratorium:
+    
+    1. Criminal activity.
+    2. Actions that threaten the health or safety of other residents.
+    3. Damaging or posing an immediate risk of damaging property.
+    4. Violating any building code, ordinance, or regulation relating to health or safety.
+    5. Violating any other part of the lease other than failing to pay rent,
+    fees, or interest.    
 ---
 code: |
   qualifies = qualifies_income and qualifies_best_efforts and qualifies_cant_afford_rent and qualifies_partial_payments and qualifies_likely_homeless
@@ -95,19 +111,18 @@ id: qualify income
 question: |
   Income qualification
 subquestion: |
-  One way you can qualify is if the IRS sent you a CARES Act 
-  stimulus payment.
-  
-  If you didn't get a stimulus payment, we will ask you about
-  your income.
+  Check any true answers that apply below.
 fields:
-  - I got a stimulus check this year (economic impact payment): received_cares_check
-    datatype: yesnoradio    
+  - I did not have to report any income to the I.R.S. last year (tax year 2019): not_taxed_in_2019
+    datatype: yesno
+  - I got a stimulus check in 2020 (economic impact payment): received_cares_check
+    datatype: yesno
+---
+question: |
+  Income qualifications
+fields:  
   - Will you file a joint tax return this year?: filing_joint
     datatype: yesnoradio
-    show if: 
-      variable: received_cares_check
-      is: False
   - I will earn less than $99,000 this year: less_than_99
     datatype: yesnoradio
     show if: 
@@ -118,7 +133,7 @@ fields:
     show if: filing_joint
 ---
 code: |
-  qualifies_income = received_cares_check or ((filing_joint and less_than_198) or ((not filing_joint) and less_than_99))
+  qualifies_income = not_taxed_in_2019 or received_cares_check or ((filing_joint and less_than_198) or ((not filing_joint) and less_than_99))
 ---
 event: exit_screen
 decoration: hand-paper
@@ -128,6 +143,9 @@ subquestion: |
   Based on your answers, you likely don't qualify for the CDC's
   Eviction Moratorium.
   
+  Keep in mind that your state may have a moratorium that gives you [more 
+  rights](https://evictionlab.org/covid-eviction-policies/).
+
   If you need help with your housing, you may be able to get help from
   your [local legal aid](https://www.lsc.gov/what-legal-aid/find-legal-aid) 
   agency.
