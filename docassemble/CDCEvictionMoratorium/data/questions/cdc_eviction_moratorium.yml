@@ -369,6 +369,10 @@ subquestion: |
   it using Microsoft Word, Google Docs, or another program of your choice.
 
 attachment code: letter['final']
+buttons:
+  - Generate new letter: new_session
+  - Erase and exit: exit
+    url: https://massaccess.suffolklitlab.org
 ---
 attachment:
   docx template file: CDC_eviction_moratorium.docx
