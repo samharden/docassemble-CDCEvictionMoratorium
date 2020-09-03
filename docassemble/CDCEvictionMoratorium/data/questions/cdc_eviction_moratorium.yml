@@ -9,6 +9,7 @@ objects:
   - other_parties: PeopleList.using(ask_number=True,target_number=1)
   - users: PeopleList.using(ask_number=True,target_number=1)
   - letter: DADict
+  - spanish_declaration: DAStaticFile.using(filename="cdc_declaration_preview_es.pdf")
 ---
 mandatory: True
 code: |
@@ -37,7 +38,9 @@ subquestion: |
   
   Use this form to tell your landlord about your rights under the Centers
   for Disease Control and Prevention's [eviction moratorium 
-  order](https://s3.amazonaws.com/public-inspection.federalregister.gov/2020-19654.pdf).
+  order](https://s3.amazonaws.com/public-inspection.federalregister.gov/2020-19654.pdf). [Learn 
+  more](https://www.nytimes.com/2020/09/02/your-money/eviction-moratorium-covid.html) 
+  at this helpful FAQ that the New York Times has written.
   
   At the end of this online form, you can download, print, or email a
   completed letter.
@@ -345,6 +348,8 @@ subquestion: |
   letter at the end of this interview.
   
   ${ pdf_concatenate(letter['preview'],filename="CDC_eviction_moratorium_preview.pdf") }
+  
+  [Leer en español](${spanish_declaration.url_for()})
 ---
 id: download
 event: download
