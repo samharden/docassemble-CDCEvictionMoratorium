@@ -21,6 +21,7 @@ code: |
   tenant_acknowledgement
   users[0].name.first
   users[0].address.address
+  set_parts(subtitle=str(users))
   other_parties[0].name.first
   other_parties[0].address.address
   preview_form
