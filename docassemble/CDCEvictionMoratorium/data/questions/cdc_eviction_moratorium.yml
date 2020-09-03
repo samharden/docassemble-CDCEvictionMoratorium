@@ -138,13 +138,17 @@ code: |
 event: exit_screen
 decoration: hand-paper
 question: |
-  This form is not for you
+  You may need a different resource
 subquestion: |
   Based on your answers, you likely don't qualify for the CDC's
   Eviction Moratorium.
   
-  Keep in mind that your state may have a moratorium that gives you [more 
+  * Keep in mind that your state may have a moratorium that gives you [more 
   rights](https://evictionlab.org/covid-eviction-policies/).
+  * Get information from the [Legal Help FAQ on Eviction & Rent 
+  Protections](https://legalfaq.org/).
+  * [Write your landlord a letter](https://www.norent.org/) explaining 
+  your situation.
 
   If you need help with your housing, you may be able to get help from
   your [local legal aid](https://www.lsc.gov/what-legal-aid/find-legal-aid) 
