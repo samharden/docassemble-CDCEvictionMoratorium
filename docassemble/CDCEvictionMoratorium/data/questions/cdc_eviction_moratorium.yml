@@ -40,7 +40,7 @@ code: |
 ---
 default screen parts:
   pre: |
-    ${get_language_list(get_tuples(['en','es']),current='en')}
+    ${get_language_list(get_tuples(['en','es']),current=user_language)}
   continue button label: |
     ${word("Next")}
 ---
