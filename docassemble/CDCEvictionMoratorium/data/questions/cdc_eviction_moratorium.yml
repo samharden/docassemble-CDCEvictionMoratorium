@@ -27,6 +27,7 @@ code: |
   preview_form
   users[0].states_above_true  
   basic_questions_signature_flow
+  store_variables_snapshot()
   download
 ---
 id: eviction_moratorium_intro_screen
@@ -176,8 +177,11 @@ help:
     Available government assistance means any governmental rental or housing
     payment benefits available to the individual or any household member.
     
-    For example, state rental assistance, disability payments, or welfare
-    benefits.
+    For example, Section 8 rental assistance, public housing, or temporary
+    help paying your rent that some cities or states may have available.
+    The [USA.gov](https://www.usa.gov/finding-home) website has some links
+    to resources that can help you find rent assistance programs in your
+    area.
     
     If you applied and followed up for any rental help or benefits that you
     qualify for, you likely used your "best efforts". You do not need to ask
