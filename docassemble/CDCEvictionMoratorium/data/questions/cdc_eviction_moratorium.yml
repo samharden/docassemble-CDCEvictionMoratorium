@@ -5,11 +5,44 @@ include:
 metadata:
   title: Eviction Moratorium
 ---
+modules:
+  - docassemble.LanguagePack.language
+---
 objects:
   - other_parties: PeopleList.using(ask_number=True,target_number=1)
   - users: PeopleList.using(ask_number=True,target_number=1)
   - letter: DADict
+  - declaration: DADict
   - spanish_declaration: DAStaticFile.using(filename="cdc_declaration_preview_es.pdf")
+---
+translations:  
+  - cdc_eviction_moratorium_es.xlsx
+---
+initial: True
+code: |
+  process_action()
+---
+initial: True
+code: |
+  set_language(user_language)
+---
+code: |
+  if url_args.get('lang'):
+    user_language = url_args.get('lang')
+  else:
+    user_language= 'en'
+---
+event: change_language
+code: |
+  if 'lang' in action_arguments():
+    user_language = action_argument('lang')
+    set_language(user_language)
+---
+default screen parts:
+  pre: |
+    ${get_language_list(get_tuples(['en','es']),current='en')}
+  continue button label: |
+    ${word("Next")}
 ---
 mandatory: True
 code: |
@@ -52,6 +85,9 @@ subquestion: |
   1. Earn under the income limit.
   2. Be unable to pay your rent because you lost income.
   3. Be at risk of homelessness or doubling up (sharing housing in close quarters).
+  4. Have tried your best to get governmental rental assistance.
+  5. Have made your best efforts to pay the amount of rent that you are able
+     to pay, taking into your personal circumstances.
   
   We will ask you detailed questions to find out if you qualify.
   
@@ -145,7 +181,7 @@ decoration: hand-paper
 question: |
   You may need a different resource
 subquestion: |
-  Based on your answers, you likely don't qualify for the CDC's
+  Based on your answers, you likely do not qualify for the CDC's
   Eviction Moratorium.
   
   * Keep in mind that your state may have a moratorium that gives you [more 
@@ -231,7 +267,7 @@ fields:
     show if: qualifies_partial_payments
 help:
   label: |
-    What if I can't pay anything?
+    What if I cannot pay anything?
   content: |
     You may not be able to pay any rent at all. That still may
     count as "best efforts".
@@ -276,7 +312,7 @@ subquestion: |
   1. I still am responsible to pay my rent and follow all other rules of my lease. My landlord may charge me fees or interest.
   2. At the end of December 31, 2020, I may be required to pay all of the rent 
   due in full. This may depend on the state that I live in. I can talk to an attorney to be sure.
-  3. I need to tell the truth on this form. If I don't, I may face civil
+  3. I need to tell the truth on this form. If I do not, I may face civil
   or criminal penalties.
 continue button field: tenant_acknowledgement
 continue button label: I understand
@@ -352,7 +388,7 @@ subquestion: |
   You can click back to make any changes, or download and edit the
   letter at the end of this interview.
   
-  ${ pdf_concatenate(letter['preview'],filename="CDC_eviction_moratorium_preview.pdf") }
+  ${ pdf_concatenate(letter['preview'], declaration['preview'], filename="CDC_eviction_moratorium_preview.pdf") }
   
   [Leer en español](${spanish_declaration.url_for()})
 ---
@@ -363,24 +399,34 @@ question: |
 subquestion: |
   Click the image below to open a preview of your letter.
   
-  ${ pdf_concatenate(letter['final'],filename="CDC_eviction_moratorium.pdf") }
+  ${ pdf_concatenate(letter['final'], declaration['final'],filename="CDC_eviction_moratorium.pdf") }
   
   1. Download a copy of this letter for your own records.
   2. Send a copy to your landlord. You can send it by email or
      print a copy and send it by mail.
-  3. You do not need to send it certified mail. If you do, it's a good
+  3. You do not need to send it certified mail. If you do, it is a good
      idea to also send a copy regular mail.
   4. If you need to make changes to your letter, download a copy and edit
   it using Microsoft Word, Google Docs, or another program of your choice.
 
-attachment code: letter['final']
+attachment code: |
+  [letter['final'], declaration['final']]
 buttons:
   - Generate new letter: new_session
   - Erase and exit: exit
     url: https://massaccess.suffolklitlab.org
 ---
 attachment:
-  docx template file: CDC_eviction_moratorium.docx
+  docx template file: CDC_eviction_moratorium_cover_letter.docx
   variable name: letter[i]
-  filename: CDC_eviction_moratorium
-  name: CDC Eviction Moratorium Letter
+  filename: CDC_eviction_moratorium_cover_letter
+  name: Cover Letter
+---
+attachment:
+  pdf template file: CDC_eviction_moratorium_declaration.pdf
+  variable name: declaration[i]
+  filename: CDC_eviction_moratorium_declaration
+  name: CDC Eviction Moratorium Declaration
+  fields:
+    - user_signature: ${ users[0].signature if i == 'final' else '' }
+    - signature_date: ${ signature_date }
