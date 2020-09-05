@@ -61,7 +61,15 @@ code: |
   users[0].states_above_true  
   basic_questions_signature_flow
   store_variables_snapshot()
-  download
+  # download
+  if send_email_to_landlord == 'email':
+    sent_email
+    prevent_going_back()
+    ending_screen
+  elif send_email_to_landlord == 'exit':
+    command('exit', url='https://massaccess.suffolklitlab.org')
+  elif send_email_to_landlord == 'new_session':
+    command('new_session')
 ---
 comment: |
   CR: deleted the concept of online since you are online when you are reading this intro. 
@@ -393,7 +401,7 @@ subquestion: |
   [Leer en español](${spanish_declaration.url_for()})
 ---
 id: download
-event: download
+# event: download
 question: |
   Your letter is ready to send
 subquestion: |
@@ -411,10 +419,11 @@ subquestion: |
 
 attachment code: |
   [letter['final'], declaration['final']]
+field: send_email_to_landlord
 buttons:
   - Generate new letter: new_session
   - Erase and exit: exit
-    url: https://massaccess.suffolklitlab.org
+  - Send email to my landlord: email    
 ---
 attachment:
   docx template file: CDC_eviction_moratorium_cover_letter.docx
@@ -480,19 +489,62 @@ fields:
       minlength: |
         You cannot keep going unless you did your best to tell the truth.
 ---
- #  id: affirmation and oath of no perjury
- #  question: |
- #    Signing Under Oath
- #  subquestion: |
- #    Your Declaration form must be signed "under penalties of perjury."
- #    This means that it can be a crime if you lie on this form.
- #  fields:
- #    - no label: users[0].states_above_true
- #      datatype: checkboxes
- #      minlength: 1
- #      choices:
- #        - I promise under penalties of perjury that my answers on this form are the truth.
- #      validation messages:
- #        minlength: |
- #          You cannot keep going unless you did your best to tell the truth.       
+template: landlord_email_template
+subject: |
+  CDC Eviction Moratorium Declaration
+content: |
+  **Message from ${users} delivered by MassAccess Project**
+
+  Dear ${ other_parties }:
+  
+  I am writing you to express my right to not be evicted through December 31,
+  2020 because I am unable to pay my rent due to the COVID-19 pandemic. I have
+  this right under the Centers for Disease Control and Prevention's order dated
+  September 1, 2020. 
+
+  See: https://www.cdc.gov/coronavirus/2019-ncov/covid-eviction-declaration.html
+  % if partial_payment_amount:
+
+  I am doing my best to make the on-time payments that I can afford. As of
+  today, I am able to pay {{ currency(partial_payment_amount) }} each month.
+  % endif
+
+  Please see my attached Declaration.
+  
+  Yours,
+  
+  ${ users }  
+  ${ users[0].email }
 ---
+question: |
+  Email information
+subquestion: |
+  A copy of your form will be emailed to ${ other_parties }, with
+  the note "**Message from ${users} delivered by MassAccess Project**".
+  
+  The email will come from "no-reply@suffolklitlab.org". You will get
+  a copy of the email in the "cc" field.
+  
+  If you prefer to send your own email, hit "Back". You can download the 
+  completed letter and add it as an attachment to your own message instead.
+fields:
+  - Your email address: users[0].email
+    datatype: email
+  - Your landlord's email: other_parties[0].email
+    datatype: email
+---
+code: |
+  if task_not_yet_performed("send email"):
+    send_email(to=other_parties[0], cc=users[0], template=landlord_email_template, attachments=[letter['final'].pdf, declaration['final']], task="send email", task_persistent=True)
+  sent_email = True
+---
+event: ending_screen
+question: |
+  Your email is on its way
+subquestion: |
+  You can still download a copy of your letter below.
+attachment code: |
+  [letter['final'], declaration['final']]
+buttons:
+  - Generate new letter: new_session
+  - Erase and exit: exit
