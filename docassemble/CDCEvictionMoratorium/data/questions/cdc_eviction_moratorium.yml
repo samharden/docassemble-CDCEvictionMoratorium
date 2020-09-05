@@ -63,31 +63,30 @@ code: |
   store_variables_snapshot()
   download
 ---
+comment: |
+  CR: deleted the concept of online since you are online when you are reading this intro. 
+  I also think we should link to page 5 of the order for users of this interview so they can see right away what the order actually is.
 id: eviction_moratorium_intro_screen
 question: |
   Stop your eviction: Mass Access Project
 subquestion: |
  
-  The [MassAccess Project](https://massaccess.suffolklitlab.org) helps you
-  file forms online during the COVID-19 emergency.
+  The [MassAccess Project](https://massaccess.suffolklitlab.org) asks you questions that help you file forms and write letters during the COVID-19 emergency.
   
-  Use this form to tell your landlord about your rights under the Centers
+  Write a letter to your landlord to tell them about your rights under the Centers
   for Disease Control and Prevention's [eviction moratorium 
-  order](https://s3.amazonaws.com/public-inspection.federalregister.gov/2020-19654.pdf). [Learn 
-  more](https://www.nytimes.com/2020/09/02/your-money/eviction-moratorium-covid.html) 
-  at this helpful FAQ that the New York Times has written.
+  order](https://s3.amazonaws.com/public-inspection.federalregister.gov/2020-19654.pdf#page=5). 
+  See [this helpful FAQ](https://www.nytimes.com/2020/09/02/your-money/eviction-moratorium-covid.html) from the New York Times.
   
-  At the end of this online form, you can download, print, or email a
-  completed letter.
+  After you have answered all the questions, you will have a letter and the CDC Declaration form to go with it. You can download, print, and email the letter and form.
   
-  To use this form, you must:
+  To use the letter and form, you must:
   
   1. Earn under the income limit.
   2. Be unable to pay your rent because you lost income.
-  3. Be at risk of homelessness or doubling up (sharing housing in close quarters).
-  4. Have tried your best to get governmental rental assistance.
-  5. Have made your best efforts to pay the amount of rent that you are able
-     to pay, taking into your personal circumstances.
+  3. Be at risk of homelessness or doubling up, "sharing housing in close quarters".
+  4. Have tried your best to get governmental rental assistance. And
+  5. Have made your best efforts to pay the amount of rent that you can pay, taking into account your personal circumstances.
   
   We will ask you detailed questions to find out if you qualify.
   
@@ -125,18 +124,17 @@ subquestion: |
   Your state may have a moratorium that gives you [more 
   rights](https://evictionlab.org/covid-eviction-policies/).
 
-  * Every adult who lives with you needs to fill out their own
-  copy of this form.
-  * This form can only stop you from being evicted for non-payment
-  of rent. You can still be evicted for other reasons.
+  * Every adult who lives with you needs to write their own
+  letter.
+  * This letter can only stop your landlord from evicting you for non-payment
+  of rent. They can still evict you for other reasons.
   * You still may owe rent and fees.
 continue button field: form_explanation
 help:
   label: |
     Why else can I be evicted?
   content: |
-    The CDC order lists 5 reasons that someone can be evicted if they
-    otherwise qualify for the moratorium:
+    The CDC order lists 5 reasons you can be evicted even if you qualify for the moratorium:
     
     1. Criminal activity.
     2. Actions that threaten the health or safety of other residents.
@@ -152,11 +150,11 @@ id: qualify income
 question: |
   Income qualification
 subquestion: |
-  Check any true answers that apply below.
+  Check the box or boxes that are true.
 fields:
-  - I did not have to report any income to the I.R.S. last year (tax year 2019): not_taxed_in_2019
+  - I did not have to report any income to the I.R.S. last year, tax year 2019.: not_taxed_in_2019
     datatype: yesno
-  - I got a stimulus check in 2020 (economic impact payment): received_cares_check
+  - I got a stimulus check (Economic Impact Payment) in 2020.: received_cares_check
     datatype: yesno
 ---
 question: |
@@ -176,6 +174,7 @@ fields:
 code: |
   qualifies_income = not_taxed_in_2019 or received_cares_check or ((filing_joint and less_than_198) or ((not filing_joint) and less_than_99))
 ---
+id: do not qualify
 event: exit_screen
 decoration: hand-paper
 question: |
@@ -188,12 +187,12 @@ subquestion: |
   rights](https://evictionlab.org/covid-eviction-policies/).
   * Get information from the [Legal Help FAQ on Eviction & Rent 
   Protections](https://legalfaq.org/).
-  * [Write your landlord a letter](https://www.norent.org/) explaining 
+  * [Write your landlord a letter](https://www.norent.org/) that explains
   your situation.
 
   If you need help with your housing, you may be able to get help from
   your [local legal aid](https://www.lsc.gov/what-legal-aid/find-legal-aid) 
-  agency.
+  program.
 buttons:
   - Restart: restart
   - Exit: exit
@@ -201,27 +200,26 @@ buttons:
 ---
 id: qualify best efforts
 question: |
-  Did you do your best to get government help paying the rent?
+  Did you do your best to get government help to pay the rent?
 subquestion: |
-  Answer yes if you do not qualify for any help from the government,
-  or if you applied and you were denied.
+  If you do not qualify for any help from the government,
+  or if you applied and you were denied, answer 'Yes.'
 yesno: qualifies_best_efforts
 help:
   label: |
     What are "best efforts"?
   content: |
-    Available government assistance means any governmental rental or housing
-    payment benefits available to the individual or any household member.
+    If you applied and followed up for any government rental help or benefits that you
+    qualify for, you probably used your "best efforts." You do not need to ask
+    for help from friends or family.
     
-    For example, Section 8 rental assistance, public housing, or temporary
-    help paying your rent that some cities or states may have available.
+    "Available government assistance" means any government rental or housing
+    payment benefits available to you or any household member.
+    
+    For example, Section 8 rental assistance, public housing, or temporary help to pay your rent that some cities or states offer.
     The [USA.gov](https://www.usa.gov/finding-home) website has some links
     to resources that can help you find rent assistance programs in your
-    area.
-    
-    If you applied and followed up for any rental help or benefits that you
-    qualify for, you likely used your "best efforts". You do not need to ask
-    for help from friends or family.
+    area.   
 ---
 id: qualify cant afford rent
 question: |
@@ -232,36 +230,38 @@ fields:
   - Check any that apply: cant_pay_reasons
     datatype: checkboxes
     choices:
-      - My household lost **substantial** income: substantial
+      - My household lost **substantial** income.: substantial
         help: |
-          "Substantial" income probably means enough that it 
-          makes a 
-          difference in your household's ability to pay for basic 
+          "Substantial" income is enough that
+          makes it harder to pay your household's basic 
           living expenses.
-      - I lost my job
-      - My hours were cut
-      - My salary was reduced
-      - I have **extraordinary** medical costs that I pay out of pocket (not covered by insurance): extraordinary
+      - I lost my job.
+      - My hours were cut.
+      - My salary was reduced.
+      - I have **extraordinary** medical costs that I pay out of pocket that insurance does not cover.: extraordinary
         help: |
-          An "extraordinary" medical expense is any unreimbursed 
-          medical expense likely to exceed 7.5% of one’s adjusted 
-          gross income for the year.
+          An "extraordinary" medical expense is any 
+          medical expense:
+          
+          * that is more than 7.5% of your adjusted 
+          gross income for the year, and 
+          * you will not be able to get paid back, "reimbursed."
 ---
 code: |
   qualifies_cant_afford_rent = cant_pay_rent and cant_pay_reasons.any_true()
 ---
 id: qualify partial payments
 question: |
-  I am doing my best to pay the amount of rent that I am able to pay, as my circumstances allow
+  I am doing my best to pay as much rent as I can, given my circumstances
 fields:
   - no label: qualifies_partial_payments
     datatype: yesnoradio
   - note: |
-      If you are making a partial payment, you may want to include the 
+      If you are paying some rent, you may want to include the 
       amount in this letter. It is **not** required. You can leave this
       blank.
     show if: qualifies_partial_payments
-  - The amount I am paying (if anything) is: partial_payment_amount
+  - The amount I am paying is: partial_payment_amount
     datatype: currency
     required: False
     show if: qualifies_partial_payments
@@ -270,32 +270,32 @@ help:
     What if I cannot pay anything?
   content: |
     You may not be able to pay any rent at all. That still may
-    count as "best efforts".
+    count as "best efforts."
     
-    Answer "yes" if you cannot pay rent because of your 
+    Answer 'Yes' if you cannot pay rent because of your 
     individual circumstances.
     
-    Answer "yes" if you cannot pay rent because you have other
-    expenses that you must pay and cannot control.    
+    Answer 'Yes' if you cannot pay rent because you have other
+    expenses you must pay and cannot control.    
 ---
 id: qualify homeless
 question: |
   Are you at risk of unsafe housing?
 subquestion: |
-  Check any that apply
+  Check any that apply:
 fields:
-  - If I am evicted: homeless_risk_factors
+  - If I am evicted,: homeless_risk_factors
     datatype: checkboxes
     choices:
-      - I am likely to become homeless
-      - I would likely need to move into a homeless shelter
-      - I would likely need to move in with someone else in close quarters: close quarters
+      - I am likely to become homeless.
+      - I will probably need to move into a homeless shelter.
+      - I will probably need to move in with someone else in close quarters.: close quarters
         help: |
-          "Close quarters" means that more people than normal would live in the same apartment. For example, sharing a bedroom or sleeping in a shared living space.
-      - I do not have any other safe housing choices: safe
+          "Close quarters" means that more people than normal live in the same apartment. For example, sharing a bedroom or sleeping in a shared living space.
+      - I do not have any other safe housing choices.: safe
         help: |
-          Safe housing means any available, unoccupied residential property, or other space for occupancy in any seasonal or temporary housing, that would not violate Federal, State, or local occupancy standards.
-      - Any other safe housing choices would cost me more money          
+          Safe housing means any available, unoccupied residential property, or other space for occupancy in any seasonal or temporary housing, that does not violate federal, state, or local occupancy standards.
+      - Any other safe housing choices would cost me more money.          
 ---
 code: |
   qualifies_likely_homeless = homeless_risk_factors.any_true()
@@ -304,14 +304,14 @@ id: I understand everything
 question: |
   Read the information below carefully
 subquestion: |
-  When you file this form, you are agreeing that you understand
-  the following:
+  When you sign the Declaration form, you are agreeing that you understand
+  the following sentences and that they are true:
   
   Even though I may not be evicted before December 31, 2020,
   
   1. I still am responsible to pay my rent and follow all other rules of my lease. My landlord may charge me fees or interest.
   2. At the end of December 31, 2020, I may be required to pay all of the rent 
-  due in full. This may depend on the state that I live in. I can talk to an attorney to be sure.
+  due, in full. This may depend on the state that I live in. I can talk to a lawyer to be sure.
   3. I need to tell the truth on this form. If I do not, I may face civil
   or criminal penalties.
 continue button field: tenant_acknowledgement
@@ -367,8 +367,8 @@ id: signature date
 question: |
   When do you plan to send this letter?
 subquestion: |
-  The CDC moratorium starts on September 4, 2020 and
-  ends on December 31, 2020.
+  The CDC moratorium starts September 4, 2020 and
+  ends December 31, 2020.
 fields: 
   - Date: signature_date
     datatype: date
@@ -385,7 +385,7 @@ subquestion: |
   Read it over carefully. Remember to come back to this
   window to sign and deliver it to your landlord.
   
-  You can click back to make any changes, or download and edit the
+  You can click 'Back' to make any changes, or download and edit the
   letter at the end of this interview.
   
   ${ pdf_concatenate(letter['preview'], declaration['preview'], filename="CDC_eviction_moratorium_preview.pdf") }
@@ -403,7 +403,7 @@ subquestion: |
   
   1. Download a copy of this letter for your own records.
   2. Send a copy to your landlord. You can send it by email or
-     print a copy and send it by mail.
+     print a copy and mail it.
   3. You do not need to send it certified mail. If you do, it is a good
      idea to also send a copy regular mail.
   4. If you need to make changes to your letter, download a copy and edit
@@ -468,31 +468,31 @@ id: affirmation and oath of no perjury
 question: |
   Signing Under Oath
 subquestion: |
-  Your form must be signed "under penalties of perjury."
+  Your Declaration form must be signed "under penalties of perjury."
   This means that it can be a crime if you lie on this form.
 fields:
   - no label: users[0].states_above_true
     datatype: checkboxes
     minlength: 1
     choices:
-      - I promise that my answers on this form are the truth under penalties of perjury
+      - I promise under penalties of perjury that my answers on this form are the truth. 
     validation messages:
       minlength: |
         You cannot keep going unless you did your best to tell the truth.
 ---
-id: affirmation and oath of no perjury
-question: |
-  Signing Under Oath
-subquestion: |
-  Your form must be signed "under penalties of perjury."
-  This means that it can be a crime if you lie on this form.
-fields:
-  - no label: users[0].states_above_true
-    datatype: checkboxes
-    minlength: 1
-    choices:
-      - I promise that my answers on this form are the truth under penalties of perjury
-    validation messages:
-      minlength: |
-        You cannot keep going unless you did your best to tell the truth.       
+ #  id: affirmation and oath of no perjury
+ #  question: |
+ #    Signing Under Oath
+ #  subquestion: |
+ #    Your Declaration form must be signed "under penalties of perjury."
+ #    This means that it can be a crime if you lie on this form.
+ #  fields:
+ #    - no label: users[0].states_above_true
+ #      datatype: checkboxes
+ #      minlength: 1
+ #      choices:
+ #        - I promise under penalties of perjury that my answers on this form are the truth.
+ #      validation messages:
+ #        minlength: |
+ #          You cannot keep going unless you did your best to tell the truth.       
 ---

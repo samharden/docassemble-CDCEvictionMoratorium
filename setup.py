@@ -53,7 +53,7 @@ setup(name='docassemble.CDCEvictionMoratorium',
       url='https://docassemble.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=['docassemble.LanguagePack', 'docassemble.MAVirtualCourt'],
+      install_requires=['docassemble.MAVirtualCourt'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/CDCEvictionMoratorium/', package='docassemble.CDCEvictionMoratorium'),
      )
