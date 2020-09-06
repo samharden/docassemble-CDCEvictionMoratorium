@@ -46,6 +46,7 @@ default screen parts:
 ---
 mandatory: True
 code: |
+  allow_cron = True
   user_role="defendant"
   eviction_moratorium_intro_screen
   form_explanation
@@ -60,7 +61,7 @@ code: |
   preview_form
   users[0].states_above_true  
   basic_questions_signature_flow
-  store_variables_snapshot()
+  store_variables_snapshot(persistent=True, data={"zip": users[0].address.zip, "state": users[0].address.state})
   # download
   if send_email_to_landlord == 'email':
     sent_email
@@ -538,6 +539,7 @@ code: |
     send_email(to=other_parties[0], cc=users[0], template=landlord_email_template, attachments=[letter['final'].pdf, declaration['final']], task="send email", task_persistent=True)
   sent_email = True
 ---
+id: email ending screen
 event: ending_screen
 question: |
   Your email is on its way
@@ -548,3 +550,15 @@ attachment code: |
 buttons:
   - Generate new letter: new_session
   - Erase and exit: exit
+---
+event: cron_daily
+code: |
+  import time
+  from random import randint, random
+  time.sleep(random()*5) # Sleep up to 5 seconds
+  
+  if task_not_yet_performed("Saved stats"):
+    if defined('users[0].address.zip'):
+      store_variables_snapshot(persistent=True, data={"zip": users[0].address.zip, "state": users[0].address.state})
+      mark_task_as_performed("Saved stats")
+  response()    
