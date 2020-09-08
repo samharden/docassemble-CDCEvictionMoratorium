@@ -265,15 +265,15 @@ question: |
 fields:
   - no label: qualifies_partial_payments
     datatype: yesnoradio
-  - note: |
-      If you are paying some rent, you may want to include the 
-      amount in this letter. It is **not** required. You can leave this
-      blank.
-    show if: qualifies_partial_payments
-  - The amount I am paying is: partial_payment_amount
-    datatype: currency
-    required: False
-    show if: qualifies_partial_payments
+  #- note: |
+  #    If you are paying some rent, you may want to include the 
+  #    amount in this letter. It is **not** required. You can leave this
+  #    blank.
+  #  show if: qualifies_partial_payments
+  #- The amount I am paying is: partial_payment_amount
+  #  datatype: currency
+  #  required: False
+  #  show if: qualifies_partial_payments
 help:
   label: |
     What if I cannot pay anything?
@@ -417,7 +417,7 @@ subquestion: |
      idea to also send a copy regular mail.
   4. If you need to make changes to your letter, download a copy and edit
   it using Microsoft Word, Google Docs, or another program of your choice.
-
+allow emailing: False # Reduce confusion
 attachment code: |
   [letter['final'], declaration['final']]
 field: send_email_to_landlord
@@ -504,11 +504,6 @@ content: |
   September 1, 2020. 
 
   See: https://www.cdc.gov/coronavirus/2019-ncov/covid-eviction-declaration.html
-  % if partial_payment_amount:
-
-  I am doing my best to make the on-time payments that I can afford. As of
-  today, I am able to pay {{ currency(partial_payment_amount) }} each month.
-  % endif
 
   Please see my attached Declaration.
   
@@ -550,15 +545,18 @@ attachment code: |
 buttons:
   - Generate new letter: new_session
   - Erase and exit: exit
----
-event: cron_daily
-code: |
-  import time
-  from random import randint, random
-  time.sleep(random()*5) # Sleep up to 5 seconds
-  
-  if task_not_yet_performed("Saved stats"):
-    if defined('users[0].address.zip'):
-      store_variables_snapshot(persistent=True, data={"zip": users[0].address.zip, "state": users[0].address.state})
-      mark_task_as_performed("Saved stats")
-  response()    
+
+#---
+# This cron job is to backfill zip/state information, we don't need this
+# anymore
+# event: cron_daily
+# code: |
+#   import time
+#   from random import randint, random
+#   time.sleep(random()*5) # Sleep up to 5 seconds
+#   
+#   if task_not_yet_performed("Saved stats"):
+#     if defined('users[0].address.zip'):
+#       store_variables_snapshot(persistent=True, data={"zip": users[0].address.zip, "state": users[0].address.state})
+#       mark_task_as_performed("Saved stats")
+#   response()    
