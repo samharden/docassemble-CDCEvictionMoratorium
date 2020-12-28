@@ -43,7 +43,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.CDCEvictionMoratorium',
-      version='0.0.23',
+      version='0.0.24',
       description=('Online form to complete CDC Eviction Moratorium letter'),
       long_description='# docassemble.CDCEvictionMoratorium\r\n\r\nOnline form to complete CDC Eviction Moratorium letter\r\n\r\n## Author\r\n\r\nSystem Administrator, admin@admin.com\r\n\r\n',
       long_description_content_type='text/markdown',
@@ -53,7 +53,7 @@ setup(name='docassemble.CDCEvictionMoratorium',
       url='https://docassemble.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=['docassemble.MAVirtualCourt'],
+      install_requires=['docassemble.MAVirtualCourt>=1.0.20'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/CDCEvictionMoratorium/', package='docassemble.CDCEvictionMoratorium'),
      )

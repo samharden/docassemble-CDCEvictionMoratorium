@@ -317,10 +317,10 @@ subquestion: |
   When you sign the Declaration form, you are agreeing that you understand
   the following sentences and that they are true:
   
-  Even though I may not be evicted before December 31, 2020,
+  Even though I may not be evicted before January 31, 2020,
   
   1. I still am responsible to pay my rent and follow all other rules of my lease. My landlord may charge me fees or interest.
-  2. At the end of December 31, 2020, I may be required to pay all of the rent 
+  2. At the end of January 31, 2020, I may be required to pay all of the rent 
   due, in full. This may depend on the state that I live in. I can talk to a lawyer to be sure.
   3. I need to tell the truth on this form. If I do not, I may face civil
   or criminal penalties.
@@ -378,13 +378,13 @@ question: |
   When do you plan to send this letter?
 subquestion: |
   The CDC moratorium starts September 4, 2020 and
-  ends December 31, 2020.
+  ends January 31, 2020.
 fields: 
   - Date: signature_date
     datatype: date
     default: ${today().format("yyyy-MM-dd")}
     min: "2020-09-04"
-    max: "2020-12-31"
+    max: "2021-01-31"
 ---
 id: preview
 continue button field: preview_form
@@ -434,13 +434,14 @@ attachment:
   name: Cover Letter
 ---
 attachment:
-  pdf template file: CDC_eviction_moratorium_declaration.pdf
+  pdf template file: cdc-declaration-mlri.pdf
   variable name: declaration[i]
   filename: CDC_eviction_moratorium_declaration
   name: CDC Eviction Moratorium Declaration
   fields:
     - user_signature: ${ users[0].signature if i == 'final' else '' }
-    - signature_date: ${ signature_date }
+    - user_name_full: ${ str(users) }
+    - signature_date: ${ signature_date.format('MM/dd/yyyy') }
 ################################
 # TEMPORARY UNTIL UPSTREAM FIX
 ###############################
@@ -499,7 +500,7 @@ content: |
 
   Dear ${ other_parties }:
   
-  I am writing you to express my right to not be evicted through December 31,
+  I am writing you to express my right to not be evicted through January 31,
   2020 because I am unable to pay my rent due to the COVID-19 pandemic. I have
   this right under the Centers for Disease Control and Prevention's order dated
   September 1, 2020. 
