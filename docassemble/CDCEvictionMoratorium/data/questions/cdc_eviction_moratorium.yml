@@ -1,6 +1,7 @@
 ---
 include:
-  - docassemble.MAVirtualCourt:basic-questions.yml
+  #- docassemble.MAVirtualCourt:basic-questions.yml
+  - docassemble.AssemblyLine:al_package.yml
 ---
 metadata:
   title: Eviction Moratorium
