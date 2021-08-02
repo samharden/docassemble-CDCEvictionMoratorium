@@ -45,10 +45,36 @@ default screen parts:
   continue button label: |
     ${word("Next")}
 ---
+id: moratorium has ended
+decoration: hand-paper
+question: |
+  The CDC Eviction moratorium has expired
+subquestion: |
+  The protection of the CDC moratorium ended on July 31, 2021.
+  
+  You can continue using this website for historical purposes only. It 
+  will not prevent your eviction.
+  
+  #### La moratoria de desalojo de los CDC ha expirado 
+  
+  La protección de la moratoria de los CDC finalizó el 31 de julio de 2021.
+  
+  Puede seguir utilizando este sitio web solo con fines históricos. Eso
+  no evitará su desalojo.   
+  
+sets: warn_moratorium_ended
+buttons:
+  - Keep going:
+      code: |
+        warn_moratorium_ended = True  
+  - Exit: exit
+    url: https://www.courtformsonline.org/  
+---
 mandatory: True
 code: |
   allow_cron = True
   user_role="defendant"
+  warn_moratorium_ended
   eviction_moratorium_intro_screen
   form_explanation
   if not qualifies_income or not qualifies_best_efforts or not qualifies_cant_afford_rent or not qualifies_partial_payments or not qualifies_likely_homeless:
