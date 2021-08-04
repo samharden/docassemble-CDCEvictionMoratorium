@@ -16,7 +16,7 @@ objects:
   - declaration: DADict
   - spanish_declaration: DAStaticFile.using(filename="cdc_declaration_preview_es.pdf")
 ---
-translations:  
+translations:
   - cdc_eviction_moratorium_es.xlsx
 ---
 initial: True
@@ -51,24 +51,24 @@ question: |
   The CDC Eviction moratorium has expired
 subquestion: |
   The protection of the CDC moratorium ended on October 3rd, 2021.
-  
-  You can continue using this website for historical purposes only. It 
+
+  You can continue using this website for historical purposes only. It
   will not prevent your eviction.
-  
-  #### La moratoria de desalojo de los CDC ha expirado 
-  
+
+  #### La moratoria de desalojo de los CDC ha expirado
+
   La protección de la moratoria de los CDC finalizó el 31 de julio de 2021.
-  
+
   Puede seguir utilizando este sitio web solo con fines históricos. Eso
-  no evitará su desalojo.   
-  
+  no evitará su desalojo.
+
 sets: warn_moratorium_ended
 buttons:
   - Keep going:
       code: |
-        warn_moratorium_ended = True  
+        warn_moratorium_ended = True
   - Exit: exit
-    url: https://www.courtformsonline.org/  
+    url: https://TenantHelpNY.org/
 ---
 mandatory: True
 code: |
@@ -86,7 +86,7 @@ code: |
   other_parties[0].name.first
   other_parties[0].address.address
   preview_form
-  users[0].states_above_true  
+  users[0].states_above_true
   basic_questions_signature_flow
   store_variables_snapshot(persistent=True, data={"zip": users[0].address.zip, "state": users[0].address.state})
   # download
@@ -95,37 +95,37 @@ code: |
     prevent_going_back()
     ending_screen
   elif send_email_to_landlord == 'exit':
-    command('exit', url='https://massaccess.suffolklitlab.org')
+    command('exit', url='https://tenanthelpny.org')
   elif send_email_to_landlord == 'new_session':
     command('new_session')
 ---
 comment: |
-  CR: deleted the concept of online since you are online when you are reading this intro. 
+  CR: deleted the concept of online since you are online when you are reading this intro.
   I also think we should link to page 5 of the order for users of this interview so they can see right away what the order actually is.
 id: eviction_moratorium_intro_screen
 question: |
-  Stop your eviction: Mass Access Project
+  Stop your eviction: TenantHelpNY
 subquestion: |
- 
-  The [MassAccess Project](https://massaccess.suffolklitlab.org) asks you questions that help you file forms and write letters during the COVID-19 emergency.
-  
+
+  This CDC Eviction Moratorium form builder asks you questions that help you file forms and write letters during the COVID-19 emergency.
+
   Write a letter to your landlord to tell them about your rights under the Centers
-  for Disease Control and Prevention's [eviction moratorium 
-  order](https://s3.amazonaws.com/public-inspection.federalregister.gov/2020-19654.pdf#page=5). 
+  for Disease Control and Prevention's [eviction moratorium
+  order](https://s3.amazonaws.com/public-inspection.federalregister.gov/2020-19654.pdf#page=5).
   See [this helpful FAQ](https://www.nytimes.com/2020/09/02/your-money/eviction-moratorium-covid.html) from the New York Times.
-  
+
   After you have answered all the questions, you will have a letter and the CDC Declaration form to go with it. You can download, print, and email the letter and form.
-  
+
   To use the letter and form, you must:
-  
+
   1. Earn under the income limit.
   2. Be unable to pay your rent because you lost income.
   3. Be at risk of homelessness or doubling up, "sharing housing in close quarters".
   4. Have tried your best to get governmental rental assistance. And
   5. Have made your best efforts to pay the amount of rent that you can pay, taking into account your personal circumstances.
-  
+
   We will ask you detailed questions to find out if you qualify.
-  
+
   % if chat_partners_available().help:
   Live help is currently available in this interview. Click the speech bubble
   (:comment-alt:) in the navigation bar to connect to a live advocate for help.
@@ -134,13 +134,13 @@ subquestion: |
 fields:
   - To continue, you must accept the [terms of use](https://massaccess.suffolklitlab.org/privacy/): acknowledged_information_use
     datatype: checkboxes
-    none of the above: False    
+    none of the above: False
     minlength: 1
     choices:
       - I accept the terms of use.
     validation messages:
       minlength: |
-        You cannot continue unless you agree to the terms of use.        
+        You cannot continue unless you agree to the terms of use.
 continue button field: eviction_moratorium_intro_screen
 terms:
   green words: |
@@ -148,16 +148,19 @@ terms:
 right: |
   % if user_has_saved_answers:
   ${fa_icon("bell", color="primary", size="sm")}
-  Saved answers available!  
-  
+  Saved answers available!
+
   ${action_button_html(url_action('load_answer'), icon="folder-open", label=word("View answers"), size="sm" )}
-  % endif    
+  % endif
+
+under:
+    This is a fork of the great work done by the [MassAccess Project](https://massaccess.suffolklitlab.org)
 ---
 id: moratorium intro
 question: |
   Some things to keep in mind
 subquestion: |
-  Your state may have a moratorium that gives you [more 
+  Your state may have a moratorium that gives you [more
   rights](https://evictionlab.org/covid-eviction-policies/).
 
   * Every adult who lives with you needs to write their own
@@ -172,13 +175,13 @@ help:
     Why else can I be evicted?
   content: |
     The CDC order lists 5 reasons you can be evicted even if you qualify for the moratorium:
-    
+
     1. Criminal activity.
     2. Actions that threaten the health or safety of other residents.
     3. Damaging or posing an immediate risk of damaging property.
     4. Violating any building code, ordinance, or regulation relating to health or safety.
     5. Violating any other part of the lease other than failing to pay rent,
-    fees, or interest.    
+    fees, or interest.
 ---
 code: |
   qualifies = qualifies_community_transmission and qualifies_income and qualifies_best_efforts and qualifies_cant_afford_rent and qualifies_partial_payments and qualifies_likely_homeless
@@ -189,11 +192,11 @@ question: |
 subquestion: |
   As of August 2021, 90% of renters live in a county with either a "substantial"
   or "high" rate of community transmission.
-  
+
   You can confirm on the CDC's website.
-  
+
   [Find your county's numbers](https://covid.cdc.gov/covid-data-tracker/#county-view).
-yesno: qualifies_community_transmission  
+yesno: qualifies_community_transmission
 ---
 id: qualify income
 question: |
@@ -208,12 +211,12 @@ fields:
 ---
 question: |
   Income qualifications
-fields:  
+fields:
   - Will you file a joint tax return this year?: filing_joint
     datatype: yesnoradio
   - I will earn less than $99,000 this year: less_than_99
     datatype: yesnoradio
-    show if: 
+    show if:
       variable: filing_joint
       is: False
   - My partner and I will earn less than $198,000 this year: less_than_198
@@ -231,21 +234,21 @@ question: |
 subquestion: |
   Based on your answers, you likely do not qualify for the CDC's
   Eviction Moratorium.
-  
-  * Keep in mind that your state may have a moratorium that gives you [more 
+
+  * Keep in mind that your state may have a moratorium that gives you [more
   rights](https://evictionlab.org/covid-eviction-policies/).
-  * Get information from the [Legal Help FAQ on Eviction & Rent 
+  * Get information from the [Legal Help FAQ on Eviction & Rent
   Protections](https://legalfaq.org/).
   * [Write your landlord a letter](https://www.norent.org/) that explains
   your situation.
 
   If you need help with your housing, you may be able to get help from
-  your [local legal aid](https://www.lsc.gov/what-legal-aid/find-legal-aid) 
+  your [local legal aid](https://www.lsc.gov/what-legal-aid/find-legal-aid)
   program.
 buttons:
   - Restart: restart
   - Exit: exit
-    url: https://massaccess.suffolklitlab.org
+    url: https://TenantHelpNY.org
 ---
 id: qualify best efforts
 question: |
@@ -261,14 +264,14 @@ help:
     If you applied and followed up for any government rental help or benefits that you
     qualify for, you probably used your "best efforts." You do not need to ask
     for help from friends or family.
-    
+
     "Available government assistance" means any government rental or housing
     payment benefits available to you or any household member.
-    
+
     For example, Section 8 rental assistance, public housing, or temporary help to pay your rent that some cities or states offer.
     The [USA.gov](https://www.usa.gov/finding-home) website has some links
     to resources that can help you find rent assistance programs in your
-    area.   
+    area.
 ---
 id: qualify cant afford rent
 question: |
@@ -282,18 +285,18 @@ fields:
       - My household lost **substantial** income.: substantial
         help: |
           "Substantial" income is enough that
-          makes it harder to pay your household's basic 
+          makes it harder to pay your household's basic
           living expenses.
       - I lost my job.
       - My hours were cut.
       - My salary was reduced.
       - I have **extraordinary** medical costs that I pay out of pocket that insurance does not cover.: extraordinary
         help: |
-          An "extraordinary" medical expense is any 
+          An "extraordinary" medical expense is any
           medical expense:
-          
-          * that is more than 7.5% of your adjusted 
-          gross income for the year, and 
+
+          * that is more than 7.5% of your adjusted
+          gross income for the year, and
           * you will not be able to get paid back, "reimbursed."
 ---
 code: |
@@ -306,7 +309,7 @@ fields:
   - no label: qualifies_partial_payments
     datatype: yesnoradio
   #- note: |
-  #    If you are paying some rent, you may want to include the 
+  #    If you are paying some rent, you may want to include the
   #    amount in this letter. It is **not** required. You can leave this
   #    blank.
   #  show if: qualifies_partial_payments
@@ -320,12 +323,12 @@ help:
   content: |
     You may not be able to pay any rent at all. That still may
     count as "best efforts."
-    
-    Answer 'Yes' if you cannot pay rent because of your 
+
+    Answer 'Yes' if you cannot pay rent because of your
     individual circumstances.
-    
+
     Answer 'Yes' if you cannot pay rent because you have other
-    expenses you must pay and cannot control.    
+    expenses you must pay and cannot control.
 ---
 id: qualify homeless
 question: |
@@ -344,7 +347,7 @@ fields:
       - I do not have any other safe housing choices.: safe
         help: |
           Safe housing means any available, unoccupied residential property, or other space for occupancy in any seasonal or temporary housing, that does not violate federal, state, or local occupancy standards.
-      - Any other safe housing choices would cost me more money.          
+      - Any other safe housing choices would cost me more money.
 ---
 code: |
   qualifies_likely_homeless = homeless_risk_factors.any_true()
@@ -355,11 +358,11 @@ question: |
 subquestion: |
   When you sign the Declaration form, you are agreeing that you understand
   the following sentences and that they are true:
-  
+
   Even though I may not be evicted before October 3, 2021,
-  
+
   1. I still am responsible to pay my rent and follow all other rules of my lease. My landlord may charge me fees or interest.
-  2. At the end of October 3rd, 2021, I may be required to pay all of the rent 
+  2. At the end of October 3rd, 2021, I may be required to pay all of the rent
   due, in full. This may depend on the state that I live in. I can talk to a lawyer to be sure.
   3. I need to tell the truth on this form. If I do not, I may face civil
   or criminal penalties.
@@ -372,13 +375,13 @@ question: |
   Sign your letter
 subquestion: |
   Your letter is almost ready. You need to sign it first.
-  
+
   Use the mouse or touchpad on your computer or
-  sign with your finger on your phone. 
-   
+  sign with your finger on your phone.
+
   You can send this letter to someone else to sign if you choose the "phone" option.
 field: signature_choice
-buttons:  
+buttons:
   - Sign on my phone: phone
     image: mobile-alt
   - Sign on this computer: this device
@@ -402,8 +405,8 @@ fields:
   - State: users[0].address.state
     code: |
       states_list()
-    default: MA      
-  - Zip: users[0].address.zip 
+    default: MA
+  - Zip: users[0].address.zip
     required: False
 ---
 id: landlords name
@@ -418,7 +421,7 @@ question: |
 subquestion: |
   The CDC moratorium starts September 4, 2020 and
   ends October 3rd, 2021.
-fields: 
+fields:
   - Date: signature_date
     datatype: date
     default: ${today().format("yyyy-MM-dd")}
@@ -430,15 +433,15 @@ continue button field: preview_form
 question: |
   Below is a preview of your letter
 subquestion: |
-  Click to open it in a new window. 
+  Click to open it in a new window.
   Read it over carefully. Remember to come back to this
   window to sign and deliver it to your landlord.
-  
+
   You can click 'Back' to make any changes, or download and edit the
   letter at the end of this interview.
-  
+
   ${ pdf_concatenate(letter['preview'], declaration['preview'], filename="CDC_eviction_moratorium_preview.pdf") }
-  
+
   [Leer en español](${spanish_declaration.url_for()})
 ---
 id: download
@@ -447,9 +450,9 @@ question: |
   Your letter is ready to send
 subquestion: |
   Click the image below to open a preview of your letter.
-  
+
   ${ pdf_concatenate(letter['final'], declaration['final'],filename="CDC_eviction_moratorium.pdf") }
-  
+
   1. Download a copy of this letter for your own records.
   2. Send a copy to your landlord. You can send it by email or
      print a copy and mail it.
@@ -464,7 +467,7 @@ field: send_email_to_landlord
 buttons:
   - Generate new letter: new_session
   - Erase and exit: exit
-  - Send email to my landlord: email    
+  - Send email to my landlord: email
 ---
 attachment:
   docx template file: CDC_eviction_moratorium_cover_letter.docx
@@ -496,7 +499,7 @@ fields:
   - Suffix: users[0].name.suffix
     code: |
       name_suffix()
-    required: False  
+    required: False
 ---
 id: persons address
 generic object: Individual
@@ -509,11 +512,11 @@ fields:
     required: False
   - City: x.address.city
   - State: x.address.state
-    default: MA   
+    default: MA
     code: |
-      states_list()   
+      states_list()
   - Zip: x.address.zip
-    required: False    
+    required: False
 ---
 id: affirmation and oath of no perjury
 question: |
@@ -526,7 +529,7 @@ fields:
     datatype: checkboxes
     minlength: 1
     choices:
-      - I promise under penalties of perjury that my answers on this form are the truth. 
+      - I promise under penalties of perjury that my answers on this form are the truth.
     validation messages:
       minlength: |
         You cannot keep going unless you did your best to tell the truth.
@@ -535,34 +538,34 @@ template: landlord_email_template
 subject: |
   CDC Eviction Moratorium Declaration
 content: |
-  **Message from ${users} delivered by MassAccess Project**
+  **CDC Eviction Moratorium**
 
   Dear ${ other_parties }:
-  
+
   I am writing you to express my right to not be evicted through October 3rd,
   2021 because I am unable to pay my rent due to the COVID-19 pandemic. I have
   this right under the Centers for Disease Control and Prevention's order dated
-  September 1, 2020. 
+  September 1, 2020.
 
   See: https://www.cdc.gov/coronavirus/2019-ncov/covid-eviction-declaration.html
 
   Please see my attached Declaration.
-  
+
   Yours,
-  
-  ${ users }  
+
+  ${ users }
   ${ users[0].email }
 ---
 question: |
   Email information
 subquestion: |
   A copy of your form will be emailed to ${ other_parties }, with
-  the note "**Message from ${users} delivered by MassAccess Project**".
-  
+  the note "**CDC Eviction Moratorium**".
+
   The email will come from "no-reply@suffolklitlab.org". You will get
   a copy of the email in the "cc" field.
-  
-  If you prefer to send your own email, hit "Back". You can download the 
+
+  If you prefer to send your own email, hit "Back". You can download the
   completed letter and add it as an attachment to your own message instead.
 fields:
   - Your email address: users[0].email
@@ -595,9 +598,9 @@ buttons:
 #   import time
 #   from random import randint, random
 #   time.sleep(random()*5) # Sleep up to 5 seconds
-#   
+#
 #   if task_not_yet_performed("Saved stats"):
 #     if defined('users[0].address.zip'):
 #       store_variables_snapshot(persistent=True, data={"zip": users[0].address.zip, "state": users[0].address.state})
 #       mark_task_as_performed("Saved stats")
-#   response()    
+#   response()
